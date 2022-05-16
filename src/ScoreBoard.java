@@ -1,6 +1,11 @@
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Score board class to trigger the auto run and dispaly the final score board
+ * @author Ravi Varma
+ *
+ */
 public class ScoreBoard {
 
 	/* Maximum Frames */
@@ -16,7 +21,7 @@ public class ScoreBoard {
 	public static final int FINAL_FRAME = 9;
 
 	/**
-	 * Initialize board with max frames - 12
+	 * Initialize score board with max frames - 10
 	 */
 	public ScoreBoard() {
 
@@ -27,12 +32,14 @@ public class ScoreBoard {
 
 	}
 
-	/*
-	 * Roll for each frame. Special case for last Frame.
+	/**
+	 * Roll for each frame. Additional roll for last Frame.
+	 * @param currentFrame reference to current frame
 	 */
 	private Frame bowl(Frame currentFrame) {
 
 		currentFrame = ScoreBoardUtils.roll(currentFrame); // FIRST ROLL
+		//currentFrame = ScoreBoardUtils.testroll(currentFrame); // ** TEST FIRST ROLL
 
 		Frame previousFrame = currentFrame.getPreviousFrame();
 
@@ -41,13 +48,15 @@ public class ScoreBoard {
 		if (currentFrame.getId() != FINAL_FRAME && currentFrame.isStrike()) {
 			return currentFrame;
 		} else {
-			currentFrame = ScoreBoardUtils.roll(currentFrame);
+			currentFrame = ScoreBoardUtils.roll(currentFrame);  //SECOND ROLL
+			//currentFrame = ScoreBoardUtils.testroll(currentFrame);  // ** SECOND TEST ROLL
 			ScoreBoardUtils.updatePreviousFrameCount(currentFrame, previousFrame);
 			ScoreBoardUtils.updateCurrentFrameCount(previousFrame, currentFrame);
 
 			if (currentFrame.getId() == FINAL_FRAME && (currentFrame.isStrike() || currentFrame.isSpare())) {
 
-				currentFrame = ScoreBoardUtils.roll(currentFrame); // SECOND ROLL
+				currentFrame = ScoreBoardUtils.roll(currentFrame); // THIRD ROLL
+				//currentFrame = ScoreBoardUtils.testroll(currentFrame); // ** THIRD TEST ROLL
 				ScoreBoardUtils.updateCurrentFrameCount(previousFrame, currentFrame);
 			}
 		}
@@ -55,17 +64,13 @@ public class ScoreBoard {
 		return currentFrame;
 	}
 
-	public static void rollAgain(Frame currentFrame, Frame previousFrame) {
-
-		ScoreBoardUtils.updatePreviousStrikeFrameCount(currentFrame, previousFrame);
-		currentFrame = ScoreBoardUtils.roll(currentFrame); // SECOND ROLL
-	}
 
 	/* Retrieve frames list */
 	public List<Frame> getFrames() {
 		return frames;
 	}
 
+	
 	/**
 	 * Loop through 10 - 12 frames
 	 */
@@ -83,7 +88,8 @@ public class ScoreBoard {
 		}
 	}
 
-	/*
+
+	/**
 	 * Print score board
 	 */
 	public void printScoreBoard() {

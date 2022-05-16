@@ -1,5 +1,7 @@
-/*
- * Frame Entity.
+/**
+ * Frame Java  Bean class
+ * @author Ravi Varma
+ *
  */
 public class Frame {
 

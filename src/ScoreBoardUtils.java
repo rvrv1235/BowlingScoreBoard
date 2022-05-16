@@ -1,5 +1,9 @@
 import java.util.Random;
-
+/**
+ * Score Board Utility Class
+ * @author Ravi Varma
+ *
+ */
 public final class ScoreBoardUtils {
 
 	/* Minimum points scored */
@@ -11,12 +15,16 @@ public final class ScoreBoardUtils {
 	/* Default Frames */
 	public static final int FINAL_FRAME = 9;
 
+	/* Private constructor to prevent instantiation */
 	private ScoreBoardUtils() {
 
 	}
 
-	/*
-	 * First Roll generate random values between 1 - 10
+	
+	/**
+	 * Roll method to randomly generate values between 1 - 10
+	 * @param frame
+	 * @return
 	 */
 	public static Frame roll(Frame frame) {
 
@@ -34,16 +42,19 @@ public final class ScoreBoardUtils {
 				frame.setSecondRollPoints(randomPoints(frame));
 			}
 		} else if (frame.getThirdRollPoints() == -1) {
-			frame.setThirdRollPoints(defaultRandomPoints(frame));
+				frame.setThirdRollPoints(defaultRandomPoints(frame));
 		}
 
 		updateFrameCount(frame);
 		return frame;
 	}
 
-	/*
+	
+	/**
 	 * Generate random points between roll 1 and roll2 from 0 - 10 in Roll 1 and the
 	 * remaining for roll2
+	 * @param frame
+	 * @return
 	 */
 	private static int randomPoints(Frame frame) {
 		int MIN_POINTS = 0, MAX_POINTS = 10;
@@ -55,19 +66,26 @@ public final class ScoreBoardUtils {
 		return points;
 	}
 
-	/*
+
+	/**
 	 * Default random points between 0 - 10
+	 * @param frame
+	 * @return
 	 */
 	private static int defaultRandomPoints(Frame frame) {
 		int MIN_POINTS = 0, MAX_POINTS = 10;
 		Random random = new Random();
+		if (frame.getSecondRollPoints()!= -1 && frame.getSecondRollPoints() != MAX_POINTS) {
+			MAX_POINTS = MAX_POINTS - frame.getSecondRollPoints();
+		}
 		int points = random.nextInt((MAX_POINTS - MIN_POINTS) + 1) + MIN_POINTS;
 		return points;
 	}
 
-	/*
-	 * Updates Current Frame counts with totals from current frame and previous
-	 * frame
+		
+	/**
+	 * Updates Current Frame counts with totals from current frame and previous frame
+	 * @param currentFrame
 	 */
 	public static void updateFrameCount(Frame currentFrame) {
 
@@ -85,8 +103,12 @@ public final class ScoreBoardUtils {
 
 	}
 
-	/* Update previous strike frame count */
-
+	
+	/**
+	 * Update previous strike frame count
+	 * @param currentFrame
+	 * @param previousFrame
+	 */
 	public static void updatePreviousStrikeFrameCount(Frame currentFrame, Frame previousFrame) {
 		if (previousFrame != null && !previousFrame.isStrike() && !previousFrame.isSpare()) {
 			updateCurrentFrameCount(previousFrame, currentFrame);
@@ -96,6 +118,8 @@ public final class ScoreBoardUtils {
 
 	}
 
+	/* recursively check previous strikes / spares and updates the frame counts */
+	
 	private static void updatePreviousStrikeFrameCount(Frame currentFrame, Frame previousFrame, int attempt) {
 
 		if (previousFrame != null) {
@@ -123,7 +147,12 @@ public final class ScoreBoardUtils {
 		}
 	}
 
-	/* Updates current frame count */
+	
+	/**
+	 * Updates current frame count
+	 * @param preivousFrame
+	 * @param currentFrame
+	 */
 
 	public static void updateCurrentFrameCount(Frame preivousFrame, Frame currentFrame) {
 		if (preivousFrame != null) {
@@ -131,7 +160,12 @@ public final class ScoreBoardUtils {
 		}
 	}
 
-	/* Updates previous frame count */
+		
+	/**
+	 * Updates previous frame count
+	 * @param currentFrame
+	 * @param previousFrame
+	 */
 	public static void updatePreviousFrameCount(Frame currentFrame, Frame previousFrame) {
 
 		if (previousFrame != null && previousFrame.isStrike()) {
@@ -139,9 +173,14 @@ public final class ScoreBoardUtils {
 		}
 	}
 	
+	/**
+	 * Test Roll method
+	 * @param frame
+	 * @return
+	 */
 	public static Frame testroll(Frame frame) {
 			
-			/*
+			
 			
 			if (frame.getId() == 0 && frame.getFirstRollPoints() == -1) {frame.setFirstRollPoints(10);}
 			else if (frame.getId() == 0 && frame.getSecondRollPoints() == -1) {	frame.setSecondRollPoints(0);}
@@ -170,13 +209,13 @@ public final class ScoreBoardUtils {
 	    	else if (frame.getId() == 8 && frame.getFirstRollPoints() == -1) {frame.setFirstRollPoints(0); }
 			else if (frame.getId() == 8 && frame.getSecondRollPoints() == -1) {	frame.setSecondRollPoints(3);}
 			
-			else if(frame.getId() == 9 && frame.getFirstRollPoints() == -1) {frame.setFirstRollPoints(10);	}
-			else if(frame.getId() == 9 && frame.getSecondRollPoints() == -1) {frame.setSecondRollPoints(0);}
+			else if(frame.getId() == 9 && frame.getFirstRollPoints() == -1) {frame.setFirstRollPoints(7);	}
+			else if(frame.getId() == 9 && frame.getSecondRollPoints() == -1) {frame.setSecondRollPoints(3);}
 			else if(frame.getId() == 9 && frame.getThirdRollPoints() == -1) {frame.setThirdRollPoints(0); }
 			
-			*/
+			
 			 
-			if (frame.getFirstRollPoints() == -1) {
+			else if (frame.getFirstRollPoints() == -1) {
 				frame.setFirstRollPoints(randomPoints(frame));
 				if (frame.getId() != 9 && frame.isStrike()) {
 					frame.setSecondRollPoints(MIN_POINTS);
